@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net"
 	"net/http"
@@ -32,6 +33,19 @@ func (s *Server) Run() (err error) {
 			}
 		}()
 	}
+	return
+}
+func (s *Server) Stop(ctx context.Context) (err error) {
+	if s.http != nil {
+		if err = s.http.Shutdown(ctx); err != nil {
+			return
+		}
+	}
+
+	//if s.grpc != nil {
+	//	s.grpc.GracefulStop()
+	//}
+
 	return
 }
 func WithHTTPServer(handler http.Handler, port string) Configuration {

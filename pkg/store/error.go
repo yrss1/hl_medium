@@ -5,6 +5,5 @@ import (
 )
 
 var (
-	ErrorNotFound      = errors.New("error not found")
-	ErrorFailedToParse = errors.New("error failed to parse")
+	ErrorNotFound = errors.New("error not found")
 )

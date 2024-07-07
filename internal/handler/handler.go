@@ -2,12 +2,14 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"medium/internal/config"
 	"medium/internal/handler/http"
 	"medium/internal/service/todo"
 	"medium/pkg/server/router"
 )
 
 type Dependencies struct {
+	Configs     config.Configs
 	TodoService *todo.Service
 }
 type Handler struct {
@@ -36,7 +38,7 @@ func WithHTTPHandler() Configuration {
 		h.HTTP = router.New()
 		taskHandler := http.NewTaskHandler(h.dependencies.TodoService)
 
-		api := h.HTTP.Group("/")
+		api := h.HTTP.Group("/api/todo-list/")
 		{
 			taskHandler.Routes(api)
 		}
