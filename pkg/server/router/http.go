@@ -7,7 +7,6 @@ import (
 
 func New() *gin.Engine {
 	r := gin.New()
-	gin.SetMode(gin.ReleaseMode)
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},

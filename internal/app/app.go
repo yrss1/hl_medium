@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"medium/internal/config"
 	"medium/internal/handler"
 	"medium/internal/repository"
@@ -51,10 +50,8 @@ func Run() {
 		fmt.Printf("ERR_RUN_SERVERS: %v", err)
 		return
 	}
-	gin.SetMode(gin.ReleaseMode)
 	if err = servers.Run(); err != nil {
-		fmt.Println("run error")
-		panic(err)
+		fmt.Printf("ERR_RUN_SERVERS: %v", err)
 		return
 	}
 	fmt.Println("http server started on http://localhost:" + configs.APP.Port)
@@ -64,8 +61,8 @@ func Run() {
 	flag.Parse()
 
 	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, syscall.SIGTERM) // When an interrupt or termination signal is sent, notify the channel
-	<-quit                                             // This blocks the main thread until an interrupt is received
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	<-quit
 	fmt.Println("gracefully shutting down...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
@@ -78,7 +75,4 @@ func Run() {
 
 	fmt.Println("server was successful shutdown.")
 
-	//fmt.Println("Press any key to exit...")
-	//var input string
-	//fmt.Scanln(&input)
 }
