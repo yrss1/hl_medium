@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"medium/internal/config"
 	"medium/internal/handler"
 	"medium/internal/repository"
@@ -50,6 +51,7 @@ func Run() {
 		fmt.Printf("ERR_RUN_SERVERS: %v", err)
 		return
 	}
+	gin.SetMode(gin.ReleaseMode)
 	if err = servers.Run(); err != nil {
 		fmt.Println("run error")
 		panic(err)
