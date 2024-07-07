@@ -1,0 +1,45 @@
+package server
+
+import (
+	"fmt"
+	"net"
+	"net/http"
+)
+
+type Server struct {
+	http     *http.Server
+	listener net.Listener
+}
+
+type Configuration func(s *Server) error
+
+func New(configs ...Configuration) (r *Server, err error) {
+	r = &Server{}
+	for _, cfg := range configs {
+		if err = cfg(r); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func (s *Server) Run() (err error) {
+	if s.http != nil {
+		go func() {
+			if err = s.http.ListenAndServe(); err != nil {
+				fmt.Println("Error running")
+				return
+			}
+		}()
+	}
+	return
+}
+func WithHTTPServer(handler http.Handler, port string) Configuration {
+	return func(s *Server) error {
+		s.http = &http.Server{
+			Addr:    ":" + port,
+			Handler: handler,
+		}
+		return nil
+	}
+}
