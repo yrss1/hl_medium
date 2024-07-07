@@ -28,7 +28,7 @@ func (s *Server) Run() (err error) {
 	if s.http != nil {
 		go func() {
 			if err = s.http.ListenAndServe(); err != nil {
-				fmt.Println("Error running")
+				fmt.Printf("Error running: %v", err)
 				return
 			}
 		}()
