@@ -12,13 +12,10 @@ type SQLX struct {
 }
 
 func New(dbSource string) (store SQLX, err error) {
-	//dbSource := "postgres://postgres:postgres@localhost:5432/book_store?sslmode=disable"
 	driverName := strings.ToLower(strings.Split(dbSource, "://")[0])
 	store.Client, err = sqlx.Connect(driverName, dbSource)
 	if err != nil {
-		fmt.Println("inadsadsads")
-		//log.Fatalf("Failed to connect to database: %v", err)
-		panic(err)
+		fmt.Printf("Failed to connect to database: %v", err)
 		return
 	}
 	store.Client.SetMaxOpenConns(20)
